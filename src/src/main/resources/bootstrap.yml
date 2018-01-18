@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: springCloud #  项目服务名称
+  cloud:
+    zookeeper:
+      enabled: true  # true:开启zookeeper外部化配置, false:读取本地配置;
+      connect-string: 192.168.100.33:2181
+      config:
+        root: /config #属性的根目录
+        enabled: true
+        watcher:
+          enabled: true #默认值是true, 监控配置变更后是否自动更新，需配合Spring Boot Actuators 使用

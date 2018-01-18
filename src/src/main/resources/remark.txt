@@ -1,0 +1,36 @@
+安装zkui 支持管理zookeepe
+1，拉取代码
+git clone https://github.com/DeemOpen/zkui.git
+2，构建安装
+cd zkui/
+yum install -y maven  #需安装maven
+mvn clean install
+
+3，修改配置文件
+cp config.cfg  target/
+cd target/
+vi config.cfg
+
+serverPort=9091     #指定端口
+zkServer=192.168.100.xx
+:2181,localhost:2181 #第一个server总是leader
+ #设置登录用户及其权限
+userSet = {"users": [{ "username":"admin" , "password":"admin123","role": "ADMIN" },{ "username":"appconfig" , "password":"appconfig","role": "USER" }]}
+
+4、启动程序至后台
+nohup java -jar zkui-2.0-SNAPSHOT-jar-with-dependencies.jar &
+
+5，访问
+http://IP_ADRESS:9091/
+
+6,利用zkui --Import导入配置信息
+格式说明：/config/dev/{application-name},{profile}={key}={value}
+本项目：/config/springCloud,dev=server.port=8888
+配置信息在服务启动时加载到Spring Environment中。配置信息默认存放在/config命名空间下。
+例如，应用名为“springCloud”，环境“dev”，则下列配置源会被创建：
+- config/springCloud,dev
+- config/springCloud
+- config/application,dev
+- config/application
+
+7，POST,  POST  POST 访问 http://localhost:8888/refresh
